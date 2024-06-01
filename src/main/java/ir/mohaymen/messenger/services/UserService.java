@@ -59,7 +59,6 @@ public class UserService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "wrong phone number or password");
         }
-        userRepository.save(user);
         log.info("User with id " + user.getId() + " and phone number " + user.getUsername() + " signed in");
         return ResponseEntity.ok(AuthResponse.builder()
                         .token(jwtService.generateToken(user))
