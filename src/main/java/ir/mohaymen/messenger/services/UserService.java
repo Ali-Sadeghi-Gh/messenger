@@ -28,12 +28,12 @@ public class UserService {
     private final UsernamePasswordChecker checker;
 
     public ResponseEntity<AuthResponse> login(@NonNull LoginRequest request) throws ResponseStatusException {
-        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "duplicate phone number");
-        }
         String username = checker.checkUsername(request.getUsername());
         String password = checker.checkPassword(request.getPassword());
         String name = checker.checkName(request.getName());
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Duplicate phone number");
+        }
         UserEntity user = UserEntity.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
@@ -53,11 +53,11 @@ public class UserService {
         String password = request.getPassword();
         Optional<UserEntity> optionalUser = userRepository.findByUsername(username);
         if (optionalUser.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "wrong phone number or password");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong phone number or password");
         }
         UserEntity user = optionalUser.get();
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "wrong phone number or password");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong phone number or password");
         }
         log.info("User with id " + user.getId() + " and phone number " + user.getUsername() + " signed in");
         return ResponseEntity.ok(AuthResponse.builder()
