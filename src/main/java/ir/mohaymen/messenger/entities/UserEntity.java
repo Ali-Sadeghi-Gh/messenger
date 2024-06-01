@@ -24,7 +24,7 @@ public class UserEntity implements UserDetails {
     @Column(name = "id", nullable = false)
     private Long id;
     @Column(name = "username", unique = true)
-    private String phoneNumber;
+    private String username;
     @Column(name = "password")
     private String password;
     @Enumerated(value = EnumType.STRING)
@@ -35,11 +35,6 @@ public class UserEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
-    }
-
-    @Override
-    public String getUsername() {
-        return phoneNumber;
     }
 
     @Override
