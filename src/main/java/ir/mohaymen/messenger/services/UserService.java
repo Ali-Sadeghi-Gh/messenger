@@ -7,6 +7,7 @@ import ir.mohaymen.messenger.entities.Role;
 import ir.mohaymen.messenger.entities.UserEntity;
 import ir.mohaymen.messenger.repositories.UserRepository;
 import ir.mohaymen.messenger.security.JwtService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,35 +25,39 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final UsernamePasswordChecker checker;
 
-    public ResponseEntity<AuthResponse> login(LoginRequest request) throws ResponseStatusException {
+    public ResponseEntity<AuthResponse> login(@NonNull LoginRequest request) throws ResponseStatusException {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "duplicate phone number");
         }
+        String username = checker.checkUsername(request.getUsername());
+        String password = checker.checkPassword(request.getPassword());
+        String name = checker.checkName(request.getName());
         UserEntity user = UserEntity.builder()
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
+                .username(username)
+                .password(passwordEncoder.encode(password))
                 .role(Role.USER)
-                .name(request.getName())
+                .name(name)
                 .build();
         userRepository.save(user);
         log.info("User with id " + user.getId() + " and phone number " + user.getUsername() + " logged in.");
         return signin(SigninRequest.builder()
-                .username(request.getUsername())
-                .password(request.getPassword())
+                .username(username)
+                .password(password)
                 .build());
     }
 
-    public ResponseEntity<AuthResponse> signin(SigninRequest request) throws ResponseStatusException {
+    public ResponseEntity<AuthResponse> signin(@NonNull SigninRequest request) throws ResponseStatusException {
         String username = request.getUsername();
         String password = request.getPassword();
         Optional<UserEntity> optionalUser = userRepository.findByUsername(username);
         if (optionalUser.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "wrong username or password");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "wrong phone number or password");
         }
         UserEntity user = optionalUser.get();
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "wrong username or password");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "wrong phone number or password");
         }
         userRepository.save(user);
         log.info("User with id " + user.getId() + " and phone number " + user.getUsername() + " signed in");

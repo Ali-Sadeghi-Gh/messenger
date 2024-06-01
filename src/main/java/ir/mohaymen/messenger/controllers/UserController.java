@@ -17,12 +17,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(path = "login")
-    public ResponseEntity<AuthResponse> register(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         return userService.login(request);
     }
 
     @PostMapping(path = "signin")
-    public ResponseEntity<AuthResponse> login(@RequestBody SigninRequest request) {
+    public ResponseEntity<AuthResponse> signin(@RequestBody SigninRequest request) {
         return userService.signin(request);
     }
 }
