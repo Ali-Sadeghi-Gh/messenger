@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user_tb", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "phone_number")
+        @UniqueConstraint(columnNames = "username")
 })
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,7 +23,7 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    @Column(name = "phone_number", unique = true)
+    @Column(name = "username", unique = true)
     private String phoneNumber;
     @Column(name = "password")
     private String password;
