@@ -24,6 +24,7 @@ public class UserRepositoryTests {
         UserEntity user = UserEntity.builder()
                 .username("09123456789")
                 .password("12345678")
+                .name("ali")
                 .build();
 
         //when
@@ -41,6 +42,7 @@ public class UserRepositoryTests {
         UserEntity user = UserEntity.builder()
                 .username("09123456789")
                 .password("12345678")
+                .name("ali")
                 .build();
 
         //when
@@ -61,6 +63,7 @@ public class UserRepositoryTests {
         UserEntity user = UserEntity.builder()
                 .username("09123456789")
                 .password("12345678")
+                .name("ali")
                 .build();
 
         //when
@@ -79,6 +82,7 @@ public class UserRepositoryTests {
         UserEntity user = UserEntity.builder()
                 .username("09123456789")
                 .password("12345678")
+                .name("ali")
                 .build();
 
         //when
@@ -100,6 +104,7 @@ public class UserRepositoryTests {
         UserEntity user = UserEntity.builder()
                 .username("09123456789")
                 .password("12345678")
+                .name("ali")
                 .build();
 
         //when
