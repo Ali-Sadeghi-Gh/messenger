@@ -38,6 +38,7 @@ public class SendMessageService {
                 .receiver(receiverOptional.get())
                 .sender(senderOptional.get())
                 .date(new Date())
+                .read(false)
                 .build();
         messageRepository.save(message);
         return ResponseEntity.ok().build();

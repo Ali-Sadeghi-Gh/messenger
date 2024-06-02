@@ -29,4 +29,6 @@ public class MessageEntity {
     private List<EntityEntity> entities = new ArrayList<>();
     @Column(name = "date")
     private Date date;
+    @Column(name = "read")
+    private boolean read;
 }
