@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,4 +27,6 @@ public class MessageEntity {
     private UserEntity receiver;
     @ManyToMany(cascade=CascadeType.ALL)
     private List<EntityEntity> entities = new ArrayList<>();
+    @Column(name = "date")
+    private Date date;
 }
