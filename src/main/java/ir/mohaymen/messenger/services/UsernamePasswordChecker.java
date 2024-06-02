@@ -15,7 +15,7 @@ public class UsernamePasswordChecker {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number must be 10 digits");
         }
         username = username.substring(username.length() - 10);
-        if (!username.matches("[0-9]{9}")) {
+        if (!username.matches("[0-9]{10}")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number must be 10 digits");
         }
         return username;
