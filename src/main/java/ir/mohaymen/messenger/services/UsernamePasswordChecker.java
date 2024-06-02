@@ -9,13 +9,13 @@ public class UsernamePasswordChecker {
 
     public String checkUsername(String username) {
         if (username == null || username.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username must not be empty");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number must not be empty");
         }
         if (username.length() < 10) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number must not be 10 digits");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number must be 10 digits");
         }
         username = username.substring(username.length() - 10);
-        if (username.matches("^[0-9]{9}$")) {
+        if (!username.matches("[0-9]{9}")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number must be 10 digits");
         }
         return username;
