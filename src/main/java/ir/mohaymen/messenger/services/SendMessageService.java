@@ -79,6 +79,7 @@ public class SendMessageService {
 
         userRepository.save(receiver);
         userRepository.save(sender);
+        log.info("User with id " + sender.getId() + " sends message with id " + message.getId() + " to user with id " + receiver.getId());
         return ResponseEntity.ok().build();
     }
 }
