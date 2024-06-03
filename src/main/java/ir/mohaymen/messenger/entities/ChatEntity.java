@@ -21,7 +21,7 @@ public class ChatEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private UserEntity addressee;
     @ManyToMany(cascade=CascadeType.ALL)
-    private List<MessageEntity> messages = new ArrayList<>();
+    private List<MessageEntity> messages;
     @Column(name = "unread_count", nullable = false)
     private Integer unreadCount;
 
@@ -35,7 +35,7 @@ public class ChatEntity {
     }
 
     public void addMessage(MessageEntity message) {
-        if (message.getSender().equals(addressee)) {
+        if (addressee.equals(message.getSender())) {
             unreadCount++;
         }
         messages.add(message);

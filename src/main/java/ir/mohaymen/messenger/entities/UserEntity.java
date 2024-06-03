@@ -61,6 +61,11 @@ public class UserEntity implements UserDetails {
     }
 
     public ChatEntity findChatByAddressee(UserEntity addressee) {
-        return chats.get(chats.indexOf(ChatEntity.builder().addressee(addressee).build()));
+        int index = chats.indexOf(ChatEntity.builder().addressee(addressee).build());
+        return index == -1 ? null : chats.get(index);
+    }
+
+    public void addChat(ChatEntity chat) {
+        chats.add(chat);
     }
 }
