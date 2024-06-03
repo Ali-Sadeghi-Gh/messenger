@@ -39,4 +39,15 @@ public class ChatEntity {
         }
         messages.add(message);
     }
+
+    public MessageEntity getUnreadMessage() {
+        for (MessageEntity message : messages) {
+            if (!message.isRead() && addressee.equals(message.getSender())) {
+                message.setRead(true);
+                unreadCount--;
+                return message;
+            }
+        }
+        return null;
+    }
 }
