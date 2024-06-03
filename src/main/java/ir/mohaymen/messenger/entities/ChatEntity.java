@@ -33,4 +33,8 @@ public class ChatEntity {
         ChatEntity chat = (ChatEntity) o;
         return addressee == chat.addressee;
     }
+
+    public void addMessage(MessageEntity message) {
+        messages.add(message);
+    }
 }
