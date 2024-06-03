@@ -53,7 +53,7 @@ public class HtmlConvertor {
             characters.add(endChar);
         }
 
-        sort(indices, characters);
+        sort(indices, characters, urls);
 
         StringBuilder html = new StringBuilder();
         html.append("<!DOCTYPE html><html><head><title>Message</title></head><body>");
@@ -89,7 +89,22 @@ public class HtmlConvertor {
         return html.toString();
     }
 
-    private void sort(List<Integer> indices, List<Character> characters) {
-
+    private void sort(List<Integer> indices, List<Character> characters, List<String> urls) {
+        int n = indices.size();
+        for (int i = 1; i < n; ++i) {
+            int integerTemp = indices.get(i);
+            char charTemp = characters.get(i);
+            String urlTemp = urls.get(i);
+            int j = i - 1;
+            while (j >= 0 && indices.get(j) > integerTemp) {
+                indices.set(j + 1, indices.get(j));
+                characters.set(j + 1, characters.get(j));
+                urls.set(j + 1, urls.get(j));
+                j = j - 1;
+            }
+            indices.set(j + 1, integerTemp);
+            characters.set(j + 1, charTemp);
+            urls.set(j + 1, urlTemp);
+        }
     }
 }
