@@ -3,7 +3,6 @@ package ir.mohaymen.messenger.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,7 +17,7 @@ public class ChatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private UserEntity addressee;
     @ManyToMany(cascade=CascadeType.ALL)
     private List<MessageEntity> messages;
