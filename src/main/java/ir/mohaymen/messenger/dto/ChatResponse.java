@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthResponse {
-    private String token;
-    private Long id;
+public class ChatResponse {
+    private Long addresseeId;
+    private String addresseeName;
+    private Integer unreadCount;
 }

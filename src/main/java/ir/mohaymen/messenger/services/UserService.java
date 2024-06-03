@@ -61,6 +61,7 @@ public class UserService {
         }
         log.info("User with id " + user.getId() + " and phone number " + user.getUsername() + " signed in");
         return ResponseEntity.ok(AuthResponse.builder()
+                        .id(user.getId())
                         .token(jwtService.generateToken(user))
                         .build());
     }

@@ -22,6 +22,7 @@ spring:
 server:
   error:
     include-message: always
+    include-stacktrace: never
 
 logging:
   file:

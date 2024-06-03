@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class UserEntity implements UserDetails {
     private Role role;
     @Column(name = "name")
     private String name;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<ChatEntity> chats = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -55,5 +58,14 @@ public class UserEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public ChatEntity findChatByAddressee(UserEntity addressee) {
+        int index = chats.indexOf(ChatEntity.builder().addressee(addressee).build());
+        return index == -1 ? null : chats.get(index);
+    }
+
+    public void addChat(ChatEntity chat) {
+        chats.add(chat);
     }
 }
