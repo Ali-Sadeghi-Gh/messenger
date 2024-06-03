@@ -19,7 +19,16 @@ public class ChatEntity {
     @Column(name = "id", nullable = false)
     private Long id;
     @OneToOne(cascade = CascadeType.ALL)
-    private UserEntity receiver;
+    private UserEntity addressee;
     @ManyToMany(cascade=CascadeType.ALL)
     private List<MessageEntity> messages = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (!ChatEntity.class.equals(o.getClass())) {
+            return false;
+        }
+        ChatEntity chat = (ChatEntity) o;
+        return addressee == chat.addressee;
+    }
 }
