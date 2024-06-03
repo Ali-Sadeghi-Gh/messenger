@@ -45,6 +45,10 @@ public class SendMessageService {
         UserEntity receiver = receiverOptional.get();
         UserEntity sender = senderOptional.get();
 
+        if (receiver.equals(sender)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No self messaging");
+        }
+
         ChatEntity receiverChat = receiver.findChatByAddressee(sender);
         ChatEntity senderChat = sender.findChatByAddressee(receiver);
 
