@@ -27,6 +27,6 @@ public class MessageEntity {
     private Date date;
     @Column(name = "read")
     private boolean read;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private UserEntity sender;
 }
