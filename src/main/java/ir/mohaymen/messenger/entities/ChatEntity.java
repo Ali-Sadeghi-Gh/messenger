@@ -22,6 +22,8 @@ public class ChatEntity {
     private UserEntity addressee;
     @ManyToMany(cascade=CascadeType.ALL)
     private List<MessageEntity> messages = new ArrayList<>();
+    @Column(name = "unread_count", nullable = false)
+    private Integer unreadCount;
 
     @Override
     public boolean equals(Object o) {
