@@ -63,7 +63,7 @@ public class SendMessageService {
                     .addressee(receiver)
                     .messages(new ArrayList<>())
                     .build();
-            receiver.addChat(receiverChat);
+            sender.addChat(senderChat);
         }
 
         MessageEntity message = MessageEntity.builder()
