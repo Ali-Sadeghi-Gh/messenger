@@ -35,6 +35,9 @@ public class ChatEntity {
     }
 
     public void addMessage(MessageEntity message) {
+        if (message.getSender().equals(addressee)) {
+            unreadCount++;
+        }
         messages.add(message);
     }
 }
