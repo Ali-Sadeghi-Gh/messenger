@@ -1,9 +1,9 @@
 package ir.mohaymen.messenger.services;
 
 import ir.mohaymen.messenger.dto.MessageRequest;
+import ir.mohaymen.messenger.entities.ChatEntity;
 import ir.mohaymen.messenger.entities.MessageEntity;
 import ir.mohaymen.messenger.entities.UserEntity;
-import ir.mohaymen.messenger.repositories.MessageRepository;
 import ir.mohaymen.messenger.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
@@ -20,11 +21,19 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class SendMessageService {
-    private final MessageRepository messageRepository;
     private final UserRepository userRepository;
 
     public ResponseEntity<?> sendMessage(MessageRequest request) {
-        Optional<UserEntity> receiverOptional = userRepository.findById(request.getReceiverId());
+        Long id = request.getReceiverId();
+        if (id == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Receiver id must be an integer");
+        }
+
+        if (request.getMessage() == null || request.getMessage().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Message must not be empty");
+        }
+
+        Optional<UserEntity> receiverOptional = userRepository.findById(id);
         if (receiverOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Receiver id not found");
         }
@@ -32,15 +41,44 @@ public class SendMessageService {
         if (senderOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sender not found");
         }
+
+        UserEntity receiver = receiverOptional.get();
+        UserEntity sender = senderOptional.get();
+
+        ChatEntity receiverChat = receiver.findChatByAddressee(sender);
+        ChatEntity senderChat = sender.findChatByAddressee(receiver);
+
+        if (receiverChat == null) {
+            receiverChat = ChatEntity.builder()
+                    .unreadCount(0)
+                    .addressee(sender)
+                    .messages(new ArrayList<>())
+                    .build();
+            receiver.addChat(receiverChat);
+        }
+
+        if (senderChat == null) {
+            senderChat = ChatEntity.builder()
+                    .unreadCount(0)
+                    .addressee(receiver)
+                    .messages(new ArrayList<>())
+                    .build();
+            receiver.addChat(receiverChat);
+        }
+
         MessageEntity message = MessageEntity.builder()
+                .sender(sender)
                 .message(request.getMessage())
                 .entities(request.getEntities())
-                .receiver(receiverOptional.get())
-                .sender(senderOptional.get())
                 .date(new Date())
                 .read(false)
                 .build();
-        messageRepository.save(message);
+
+        receiverChat.addMessage(message);
+        senderChat.addMessage(message);
+
+        userRepository.save(receiver);
+        userRepository.save(sender);
         return ResponseEntity.ok().build();
     }
 }
