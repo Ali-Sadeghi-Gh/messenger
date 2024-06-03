@@ -45,6 +45,7 @@ public class ChatEntity {
             if (!message.isRead() && addressee.equals(message.getSender())) {
                 message.setRead(true);
                 unreadCount--;
+                unreadCount = unreadCount < 0 ? 0 : unreadCount;
                 return message;
             }
         }
