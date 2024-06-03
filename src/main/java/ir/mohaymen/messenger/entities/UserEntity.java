@@ -59,4 +59,8 @@ public class UserEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public ChatEntity findChatByAddressee(UserEntity addressee) {
+        return chats.get(chats.indexOf(ChatEntity.builder().addressee(addressee).build()));
+    }
 }
