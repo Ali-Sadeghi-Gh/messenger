@@ -20,6 +20,7 @@ public class ChatEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     private UserEntity addressee;
     @ManyToMany(cascade=CascadeType.ALL)
+    @OrderBy("date asc")
     private List<MessageEntity> messages;
     @Column(name = "unread_count", nullable = false)
     private Integer unreadCount;
