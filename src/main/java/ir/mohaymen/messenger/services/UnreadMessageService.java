@@ -37,6 +37,10 @@ public class UnreadMessageService {
         }
         UserEntity addressee = addresseeOptional.get();
 
+        if (user.equals(addressee)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User and addressee must not be equal");
+        }
+
         ChatEntity chat = user.findChatByAddressee(addressee);
 
 
