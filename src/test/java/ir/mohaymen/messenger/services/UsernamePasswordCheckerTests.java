@@ -18,7 +18,7 @@ public class UsernamePasswordCheckerTests {
     @Test
     public void checkName() {
         //given
-        String name = "ali";
+        String name = "";
 
         //when
         String checkedName = checker.checkName(name);
